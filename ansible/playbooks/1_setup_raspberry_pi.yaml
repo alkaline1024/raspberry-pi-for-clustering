@@ -1,0 +1,22 @@
+# /playbooks/1_setup_raspberry_pi.yaml
+- name: Setup Raspberry Pis for Cluster
+  hosts: node-03
+  become: True
+  tasks:
+    - name: Setup Hostname
+      hostname:
+        name: "{{ inventory_hostname }}"
+      
+    - name: Set Hosts in /etc/hosts
+      template:
+        src: /mnt/c/Users/earth/Desktop/COE/3rd-2-2566/240-352-HPC/ClusterFile/ansible/templates/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Install ntpdate for sync the system time in the background
+      apt: name=ntpdate update_cache=yes
+
+    - name: Reboot
+      reboot:

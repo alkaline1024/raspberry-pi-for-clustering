@@ -1,0 +1,6 @@
+# /playbooks/group_vars/all
+private_ip_address:
+  node_front: 10.0.1.10
+  node_01:  10.0.1.11
+  node_02:  10.0.1.12
+

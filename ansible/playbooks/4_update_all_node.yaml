@@ -1,0 +1,25 @@
+# /playbooks/4_upadte_all_node.yaml
+- name: Update new node information to all node
+  hosts: all
+  become: True
+  tasks:
+    - name: Update new Hosts file in /etc/hosts
+      template:
+        src: /mnt/c/Users/earth/Desktop/COE/3rd-2-2566/240-352-HPC/ClusterFile/ansible/templates/hosts
+        dest: /etc/hosts
+        owner: root
+        group: root
+        mode: "0644"
+    
+    - name: Update Slurm Config
+      template:
+        src: /mnt/c/Users/earth/Desktop/COE/3rd-2-2566/240-352-HPC/ClusterFile/ansible/templates/slurm.conf
+        dest: /etc/slurm/slurm.conf
+        owner: root
+        group: root
+        mode: "0644"
+    
+    - name: Restart Slurm Controller
+      when: inventory_hostname in groups['head_node']
+      command: "systemctl restart slurmd slurmctld"
+    

@@ -1,0 +1,25 @@
+# /playbooks/2_setup_nfs_client.yaml
+- name: Setup Network File System (NFS)
+  hosts: node-03
+  become: True
+  tasks:    
+    - name: Install NFS client
+      apt: name=nfs-common update_cache=yes
+
+    - name: Create NFS mount folder
+      command: "mkdir -p /clusterfs"
+      
+    - name: Change owner NFS mount folder
+      command: "chown nobody.nogroup /clusterfs"
+      
+    - name: Create permission NFS mount folder
+      command: "chmod -R 777 /clusterfs"
+      
+    - name: Setup automatic mounting
+      lineinfile:
+        path: /etc/fstab
+        line: 10.0.1.10:/clusterfs    /clusterfs    nfs    defaults   0 0
+        create: yes
+
+    - name: Mounting NFS folder
+      command: "mount -a"

@@ -1,0 +1,25 @@
+# /playbooks/3_setup_slurm_client.yaml
+- name: Setup Slurm Client
+  hosts: node-03
+  become: True
+  tasks:    
+    - name: Install Slurm Daemon
+      apt: name=slurmd update_cache=yes
+
+    - name: Install Slurm Client
+      apt: name=slurm-client update_cache=yes
+
+    - name: Copy Munge key from NFS
+      command: "cp /clusterfs/munge.key /etc/munge/munge.key"
+    
+    - name: Copy Slurm config from NFS
+      command: "cp /clusterfs/slurm.conf /etc/slurm/slurm.conf"
+
+    - name: Copy cgroup from NFS
+      command: "cp /clusterfs/cgroup* /etc/slurm"
+
+    - name: Enable Service (Slurm daemon and Munge)
+      command: "systemctl enable slurmd munge"
+    
+    - name: Start Service (Slurm daemon and Munge)
+      command: "systemctl start slurmd munge"

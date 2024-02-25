@@ -1,0 +1,6 @@
+[head_node]
+node-front ansible_host=172.30.222.222 ansible_port=1000
+
+[compute_node]
+node-01 ansible_host=172.30.222.222 ansible_port=2000
+node-02 ansible_host=172.30.222.222 ansible_port=3000
